@@ -1,6 +1,8 @@
 package com.example.home_task_spring.config;
 
 import com.example.home_task_spring.model.annotation.CacheResult;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -10,22 +12,22 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Method;
 
 @Component
+@Slf4j
 public class PrintBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
+
+    @SneakyThrows
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         for (String beanDefinitionName : beanFactory.getBeanDefinitionNames()) {
             BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanDefinitionName);
 
             if (beanDefinition.isPrototype()) {
-                System.out.println("Есть Bean со Scope = Prototype");
-                for (Method declaredMethod : beanDefinition.getClass().getDeclaredMethods()) {
-                    //Не могу понять почему не работает
+                for (Method declaredMethod : Class.forName(beanDefinition.getBeanClassName()).getDeclaredMethods()) {
                     if (declaredMethod.isAnnotationPresent(CacheResult.class)) {
-                        System.out.println("и аннотацией @CacheResult");
+                        log.warn("Bean: {} with Scope = prototype mark annotation @CacheResult", beanDefinitionName);
                     }
                 }
             }
-            System.out.println(beanDefinitionName);
         }
     }
 }

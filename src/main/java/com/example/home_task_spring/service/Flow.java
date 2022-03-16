@@ -1,35 +1,31 @@
 package com.example.home_task_spring.service;
 
 import com.example.home_task_spring.model.ExternalInfo;
-import com.example.home_task_spring.model.annotation.CacheResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
-@Scope("prototype")
 public class Flow {
 
-    ExternalService externalService;
-    Process process;
+    private final ExternalService externalService;
+    private final Process process;
 
     @Autowired
     public Flow(ExternalService externalService,
-                @Lazy Process process) {
+                Process process) {
         this.externalService = externalService;
         this.process = process;
     }
 
-    @CacheResult
+
     public void run(Integer id) {
         ExternalInfo externalInfo = externalService.getExternalInfo(id);
-
         if (externalInfo.getInfo() != null) {
             process.run(externalInfo);
         } else {
-            System.out.println(process.getClass());
+            log.info("Not run process: {}", externalInfo);
         }
-
     }
 }

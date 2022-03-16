@@ -9,5 +9,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface CacheResult {
-    //Не понял как сделать сохранеие результатов метода
 }
