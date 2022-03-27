@@ -2,6 +2,7 @@ package com.example.home_task_spring.service;
 
 import com.example.home_task_spring.model.ExternalInfo;
 import com.example.home_task_spring.model.annotation.CacheResult;
+import com.example.home_task_spring.model.annotation.CheckRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -36,13 +37,13 @@ public class ExternalServiceImpl implements ExternalService {
 
     }
 
+    @CheckRequest
     @CacheResult
     @Override
     public ExternalInfo getExternalInfo(Integer id) {
-        log.info("Вызов метода getExternalInfo c id: " + id);
-        for (Map.Entry<Integer, ExternalInfo> integerExternalInfoEntry : externalInfoHashMap.entrySet()) {
-            System.out.println("Key: " + integerExternalInfoEntry.getKey()
-                    + "Value: " + integerExternalInfoEntry.getValue());
+        ExternalInfo externalInfo = externalInfoHashMap.get(id);
+        if (externalInfo == null) {
+            throw new RuntimeException("ExternalInfo with id: " + id + " не найден!");
         }
         return externalInfoHashMap.get(id);
     }
