@@ -18,8 +18,8 @@ public class BankBookRestController {
     }
 
     @GetMapping("/by-user-id/{userId}")
-    public ResponseEntity<List<BankBookDto>> getAllBankBookByUser(@PathVariable Integer id) {
-        return ResponseEntity.ok(bankBookService.getAllBankBookByUser(id));
+    public ResponseEntity<List<BankBookDto>> getAllBankBookByUser(@PathVariable Integer userId) {
+        return ResponseEntity.ok(bankBookService.getAllBankBookByUser(userId));
     }
 
     @GetMapping("/{bankBookId}")
