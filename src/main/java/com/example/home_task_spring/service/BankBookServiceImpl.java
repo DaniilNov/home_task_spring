@@ -22,8 +22,8 @@ public class BankBookServiceImpl implements BankBookService {
 
     @PostConstruct
     void init() {
-        userDtoMap.put(1, UserDto.builder().id(1).name("User").build());
-        UserDto userDto = UserDto.builder().id(2).name("User2").build();
+        userDtoMap.put(1, UserDto.builder().id(1).email("123346@mail.com").name("User").build());
+        UserDto userDto = UserDto.builder().id(2).email("12334@mail.com").name("User2").build();
         bankBookDtoMap.put(1, BankBookDto.builder().id(1).amount(BigDecimal.ONE).currency("USD").number("one").userId(userDto.getId()).build());
     }
 

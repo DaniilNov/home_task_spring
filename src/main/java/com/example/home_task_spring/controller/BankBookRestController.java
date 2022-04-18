@@ -2,12 +2,18 @@ package com.example.home_task_spring.controller;
 
 import com.example.home_task_spring.model.BankBookDto;
 import com.example.home_task_spring.service.BankBookService;
+import com.example.home_task_spring.validation.Create;
+import com.example.home_task_spring.validation.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/bank-book")
 public class BankBookRestController {
@@ -23,15 +29,17 @@ public class BankBookRestController {
     }
 
     @GetMapping("/{bankBookId}")
-    public ResponseEntity<BankBookDto> getUserById(@PathVariable Integer bankBookId) {
+    public ResponseEntity<BankBookDto> getUserById(@Min(value = 3L, message = "Больше 3") @PathVariable Integer bankBookId) {
         return ResponseEntity.ok(bankBookService.getById(bankBookId));
     }
 
+    @Validated(Create.class)
     @PostMapping
-    public ResponseEntity<BankBookDto> createBankBook(@RequestBody BankBookDto bankBookDto) {
+    public ResponseEntity<BankBookDto> createBankBook(@Valid @RequestBody BankBookDto bankBookDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(bankBookService.create(bankBookDto));
     }
 
+    @Validated(Update.class)
     @PutMapping
     public BankBookDto updateBankBook(@RequestBody BankBookDto bankBookDto) {
         return bankBookService.update(bankBookDto);
